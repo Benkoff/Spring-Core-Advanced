@@ -14,9 +14,8 @@ import java.util.List;
  * Created by jt on 12/18/15.
  */
 @Service
-@Profile({"springdatajpa", "jpadao"})
+@Profile("springdatajpa")
 public class ProductServiceRepoImpl implements ProductService {
-
     private ProductRepository productRepository;
 
     @Autowired
