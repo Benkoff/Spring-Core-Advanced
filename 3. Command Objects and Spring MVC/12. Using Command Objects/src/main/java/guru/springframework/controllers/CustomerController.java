@@ -57,10 +57,10 @@ public class CustomerController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String saveOrUpdate(@Valid CustomerForm customerForm, BindingResult bindingResult){
-        Customer newCustomer = customerService.saveOrUpdateCustomerForm(customerForm);
         if(bindingResult.hasErrors()) {
             return "customer/customerform";
         }
+        Customer newCustomer = customerService.saveOrUpdateCustomerForm(customerForm);
 
         return "redirect:customer/show/" + newCustomer.getId();
     }

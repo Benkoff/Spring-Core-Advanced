@@ -3,6 +3,9 @@ package guru.springframework.commands;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 /**
  * Created by Ben Novikov on 2018-02-09
  */
@@ -13,13 +16,17 @@ public class CustomerForm {
     private Integer customerVersion;
 
     @NotEmpty
+    @Size(min = 2, max = 20)
     private String userName;
     private String passwordText;
     private String passwordTextConf;
     private String firstName;
     private String lastName;
+
+    @NotEmpty
     @Email
     private String email;
+    @Pattern(regexp="\\(\\d{3}\\)\\d{3}-\\d{4}")
     private String phoneNumber;
 
     public Integer getUserId() {
