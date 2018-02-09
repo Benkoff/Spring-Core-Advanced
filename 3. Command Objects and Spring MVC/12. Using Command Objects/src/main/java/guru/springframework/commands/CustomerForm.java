@@ -1,5 +1,8 @@
 package guru.springframework.commands;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * Created by Ben Novikov on 2018-02-09
  */
@@ -8,11 +11,14 @@ public class CustomerForm {
     private Integer userVersion;
     private Integer customerId;
     private Integer customerVersion;
+
+    @NotEmpty
     private String userName;
     private String passwordText;
     private String passwordTextConf;
     private String firstName;
     private String lastName;
+    @Email
     private String email;
     private String phoneNumber;
 
