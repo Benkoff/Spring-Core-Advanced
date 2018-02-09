@@ -16,7 +16,7 @@ public class CustomerForm {
     private Integer customerVersion;
 
     @NotEmpty
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 75)
     private String userName;
     private String passwordText;
     private String passwordTextConf;
@@ -26,7 +26,6 @@ public class CustomerForm {
     @NotEmpty
     @Email
     private String email;
-    @Pattern(regexp="\\(\\d{3}\\)\\d{3}-\\d{4}")
     private String phoneNumber;
 
     public Integer getUserId() {
