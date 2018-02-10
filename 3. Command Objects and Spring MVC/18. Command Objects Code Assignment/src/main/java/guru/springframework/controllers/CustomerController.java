@@ -1,9 +1,12 @@
 package guru.springframework.controllers;
 
 import guru.springframework.commands.CustomerForm;
+import guru.springframework.converters.CustomerToCustomerForm;
 import guru.springframework.domain.Customer;
 import guru.springframework.services.CustomerService;
+import guru.springframework.validators.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,10 +25,23 @@ import javax.validation.Valid;
 public class CustomerController {
 
     private CustomerService customerService;
+    private CustomerToCustomerForm customerToCustomerForm;
+    private PasswordValidator passwordValidator;
 
     @Autowired
     public void setCustomerService(CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    @Autowired
+    public void setCustomerToCustomerForm(CustomerToCustomerForm customerToCustomerForm) {
+        this.customerToCustomerForm = customerToCustomerForm;
+    }
+
+    @Autowired
+    @Qualifier("passwordValidator")
+    public void setPasswordValidator(PasswordValidator passwordValidator) {
+        this.passwordValidator = passwordValidator;
     }
 
     @RequestMapping({"/list", "/"})
@@ -42,7 +58,9 @@ public class CustomerController {
 
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model){
-        model.addAttribute("customerForm", customerService.getById(id));
+        Customer customer = customerService.getById(id);
+        model.addAttribute("customerForm", customerToCustomerForm.convert(customer));
+
         return "customer/customerform";
     }
 
@@ -54,12 +72,12 @@ public class CustomerController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String saveOrUpdate(@Valid CustomerForm customerForm, BindingResult bindingResult){
-
+        passwordValidator.validate(customerForm, bindingResult);
         if(bindingResult.hasErrors()){
             return "customer/customerform";
         }
-
         Customer newCustomer = customerService.saveOrUpdateCustomerForm(customerForm);
+
         return "redirect:customer/show/" + newCustomer.getId();
     }
 
